@@ -1,0 +1,28 @@
+[package]
+name = "radicle-graphql"
+version = "0.1.0"
+authors = ["Massimiliano Mantione <massimiliano.mantione@gmail.com>"]
+edition = "2018"
+
+# See more keys and their definitions at https://doc.rust-lang.org/cargo/reference/manifest.html
+
+[dependencies]
+failure = "0.1.7"
+structopt = "0.1.0"
+structopt-derive = "0.1.0"
+indexmap = "1"
+uuid_internal = { version = "0.7", optional = true, package = "uuid" }
+chrono_internal = { version = "0.4", optional = true, package = "chrono" }
+log = { version = "0.4", optional = true }
+env_logger = "0.7.1"
+paste = "0.1"
+serde = "1.0.105"
+serde_json = "1.0.48"
+juniper = "0.14.2"
+# juniper-from-schema = "0.5.2"
+# juniper-eager-loading = "0.5.1"
+diesel = { version = "1.4.4", features = ["sqlite", "r2d2"]}
+diesel_migrations = "1.4.0"
+wundergraph = { version = "0.1.2", features = ["sqlite"]}
+wundergraph_derive = "0.1.0"
+actix-web = "1.0.0"
