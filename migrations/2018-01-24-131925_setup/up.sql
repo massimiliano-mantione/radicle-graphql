@@ -1,0 +1,37 @@
+-- Your SQL goes here
+
+CREATE TABLE entities(
+    hash TEXT PRIMARY KEY,
+    parent TEXT NOT NULL REFERENCES entities(hash),
+    revision INTEGER NOT NULL,
+    timestamp TEXT NOT NULL,
+    status TEXT NOT NULL CHECK(status IN ("OLD", "CURRENT", "DRAFT")),
+
+    name TEXT NOT NULL,
+    info TEXT
+);
+
+CREATE TABLE keys(
+    id INTEGER PRIMARY KEY AUTOINCREMENT,
+    data TEXT NOT NULL,
+    algo TEXT NOT NULL CHECK(algo IN ("FOO", "BAR"))
+);
+
+CREATE TABLE devices(
+    key INTEGER PRIMARY KEY REFERENCES keys(id) ON DELETE RESTRICT ON UPDATE RESTRICT,
+    address TEXT
+);
+
+CREATE TABLE signatures(
+    key INTEGER REFERENCES keys(id) ON DELETE RESTRICT ON UPDATE RESTRICT,
+    hash TEXT NOT NULL REFERENCES entities(hash) ON DELETE RESTRICT ON UPDATE RESTRICT,
+    data TEXT NOT NULL,
+    by TEXT REFERENCES entities(hash) ON DELETE RESTRICT ON UPDATE RESTRICT,
+    PRIMARY KEY(key, hash)
+);
+
+CREATE TABLE certifiers(
+    certifier TEXT NOT NULL REFERENCES entities(hash) ON DELETE RESTRICT ON UPDATE RESTRICT,
+    entity TEXT NOT NULL REFERENCES entities(hash) ON DELETE RESTRICT ON UPDATE RESTRICT,
+    PRIMARY KEY(certifier, entity)
+);

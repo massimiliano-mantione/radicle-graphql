@@ -1,0 +1,66 @@
+# Public key
+type Key {
+  # The key as bs58 string
+  id: ID!
+  data: Text!
+  algo: Text
+}
+
+# Radicle device
+type Device {
+  # The key as bs58 string
+  key: ID!
+  # The device network address
+  address: String
+}
+
+# Entity signature
+type Signature {
+  # Hash of the signed entty
+  hash: String!
+  # Signature public key
+  key: ID!
+  # Signature
+  sig: String!
+  # If the signarure has been done by a signatory, its entity id (otherwise `null`)
+  by: String
+}
+
+# Entity lifecycle status
+enum Status {
+  OLD
+  CURRENT
+  DRAFT
+}
+
+# A Radicle entity
+type Entity {
+  hash: ID!
+  parent: String
+  revision: Int!
+  timestamp: Float!
+
+  status: Status!
+
+  name: String!
+
+  info: String
+
+  keys: [Key!]
+  devices: [Device!]
+  certifiers: [Entity!]
+  signatures: [Signature!]
+}
+
+type Query {
+  byId(id: String!): Entity
+  byHash(hash: String!): Entity
+  revisions(root: String!, min: Int = 0, max: Int): [Entity!]
+  drafts(root: String!): [Entity!]
+
+  byName(name: String!): [Entity!]
+  byInfo(info: String!): [Entity!]
+
+  byCertifier(id: String!): [Entity!]
+  byDevice(key: String!): [Entity!]
+}
